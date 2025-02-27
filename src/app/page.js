@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Sidebar from "./components/Sidebar";
+import LoginPage from "./login/page";
 
 export default function Home() {
   return (
-    <Sidebar userRole="faculty" />
+    // <LoginPage />
+    <Sidebar userRole={"admin"} />
   );
 }

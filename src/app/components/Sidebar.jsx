@@ -7,6 +7,7 @@ import UserManagement from "../admin/user/page";
 import CourseManagement from "../admin/course/page";
 import AssignFaculty from "../admin/faculty/page";
 import FacultyDashboard from "../faculty/courses/page";
+import StudentDashboard from "../student/courses/page";
 
 const Sidebar = ({ userRole }) => {
   const router = useRouter();
@@ -26,7 +27,7 @@ const Sidebar = ({ userRole }) => {
 
   const studentMenuItems = [
     { name: "Dashboard", icon: <FaTachometerAlt /> },
-    { name: "My Courses", icon: <FaBook /> },
+    { name: "My Courses", icon: <FaBook />, component: <StudentDashboard /> },
   ];
 
   const menuItems =
