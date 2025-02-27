@@ -1,10 +1,8 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const FacultyDashboard = () => {
-  const [courses, setCourses] = useState([
-    { courseId: "C101", courseName: "Web Development" },
-    { courseId: "C102", courseName: "Data Structures" },
-  ]);
+  const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [students, setStudents] = useState([
     { studentId: "S201", studentName: "Alice" },
@@ -19,7 +17,7 @@ const FacultyDashboard = () => {
   const handleSelectCourse = (course) => {
     setSelectedCourse(course);
   };
-
+  console.log(courses);
   const handleAddChapter = () => {
     if (newChapter) {
       setChapters([...chapters, newChapter]);
@@ -41,25 +39,42 @@ const FacultyDashboard = () => {
     });
   };
 
+
+
+  useEffect(()=>{
+    const getLoginDetails = async ()=>{
+      console.log(localStorage.getItem("token"))
+      const res = await axios.get("/api/faculty/assign", {
+        headers:{
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+
+      setCourses(res.data.courses);
+    }
+
+    getLoginDetails();
+  }, [])
+
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Faculty Dashboard</h2>
       {!selectedCourse ? (
         <div>
           <h3 className="text-xl mb-3">Assigned Courses</h3>
-          {courses.map((course) => (
+          {courses?.map((course) => (
             <div
-              key={course.courseId}
+              key={course._id}
               className="p-3 bg-gray-200 mb-2 cursor-pointer"
               onClick={() => handleSelectCourse(course)}
             >
-              {course.courseName}
+              {course?.courseId?.courseName}
             </div>
           ))}
         </div>
       ) : (
         <div>
-          <h3 className="text-xl font-bold mb-3">{selectedCourse.courseName}</h3>
+          <h3 className="text-xl font-bold mb-3">{selectedCourse.courseId.courseName}</h3>
           <h4 className="text-lg font-bold mt-4">Assigned Students</h4>
           <ul>
             {students.map((student) => (

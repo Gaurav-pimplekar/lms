@@ -1,24 +1,56 @@
-"use client"
-import { useState } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import Sidebar from "../components/Sidebar";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [userRole, setUserRole] = useState(null);
   const router = useRouter();
 
-  const handleLogin = (e) => {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    if (token && role) {
+      setUserRole(role);
+    }
+  }, []);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Mock authentication (replace with real auth logic)
-    if (email === "admin@example.com" && password === "password") {
-      router.push("/admin-dashboard");
-    } else if (email === "faculty@example.com" && password === "password") {
-      router.push("/faculty-dashboard");
-    } else if (email === "student@example.com" && password === "password") {
-      router.push("/student-dashboard");
-    } else {
-      alert("Invalid credentials");
+    setError("");
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      setUserRole(data.role);
+
+      console.log(data);
+      if (data.role === "admin") {
+        router.push("/home/admin");
+      } else if (data.role === "faculty") {
+        router.push("/home/faculty");
+      } else if (data.role === "student") {
+        router.push("/home/student");
+      }
+    } catch (err) {
+        console.log(err);
+      setError(err.message);
     }
   };
 
@@ -26,6 +58,7 @@ const LoginPage = () => {
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+        {error && <p className="text-red-500 text-center">{error}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block mb-2 text-gray-700">Email</label>
@@ -63,6 +96,7 @@ const LoginPage = () => {
           </button>
         </form>
       </div>
+
     </div>
   );
 };
