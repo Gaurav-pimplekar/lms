@@ -1,6 +1,6 @@
 import connectDB from "@/lib/dbConnect";
 import { authMiddleware } from "@/middelware/auth";
-import Faculty from "@/models/Faculty";
+import Faculty from "@/models/Lecture";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -8,10 +8,10 @@ export async function POST(req) {
       await connectDB();
   
       // Parse JSON request body
-      const { facultyId, courseId, studentId, startTime, endTime } = await req.json();
+      const { facultyId, courseId, startTime, endTime } = await req.json();
   
       // Validate required fields
-      if (!facultyId || !courseId || !studentId || !startTime || !endTime) {
+      if (!facultyId || !courseId || !startTime || !endTime) {
         return NextResponse.json({ error: "All fields are required" }, { status: 400 });
       }
   
@@ -19,7 +19,6 @@ export async function POST(req) {
       const faculty = await Faculty.create({
         facultyId,
         courseId,
-        studentId,
         startTime,
         endTime
       });
@@ -45,7 +44,7 @@ export async function POST(req) {
       const facultyId = req.user.id; // Assuming email is used as facultyId
   
       // Fetch courses assigned to the faculty
-      const facultyCourses = await Faculty.find({ facultyId }).populate("courseId").populate("facultyId").populate("studentId");
+      const facultyCourses = await Faculty.find({ facultyId }).populate("facultyId");
   
       return NextResponse.json({ courses: facultyCourses }, { status: 200 });
   

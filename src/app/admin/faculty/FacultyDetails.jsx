@@ -28,7 +28,7 @@ const FacultyDetails = ({ faculty, onClose }) => {
     try {
       const response = await axios.post("/api/faculty/assign", {studentId: selectedStudent, courseId: selectedCourse, startTime, endTime, facultyId: faculty._id});
 
-      const data = await response.json();
+      const data = res.data;
       if (response.ok) {
         setMessage("Assignments saved successfully!");
       } else {

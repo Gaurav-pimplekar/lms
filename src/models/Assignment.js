@@ -22,29 +22,6 @@ const AssignmentSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    submissions: [
-      {
-        student: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User", // Student who submitted
-          required: true,
-        },
-        submissionLink: {
-          type: String, // Link to the student's submitted file or work
-          required: true,
-        },
-        submittedAt: {
-          type: Date,
-          default: Date.now,
-        },
-        grade: {
-          type: String, // Grade for the assignment (optional)
-        },
-        feedback: {
-          type: String, // Faculty feedback (optional)
-        },
-      },
-    ],
   },
   { timestamps: true }
 );
