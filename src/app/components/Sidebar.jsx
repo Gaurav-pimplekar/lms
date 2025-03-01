@@ -9,15 +9,15 @@ import AssignFaculty from "../admin/faculty/page";
 import FacultyDashboard from "../faculty/courses/page";
 import StudentDashboard from "../student/courses/page";
 
-const Sidebar = ({ userRole }) => {
+const Sidebar = ({ userRole, children }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState({name:"Dashboard"});
 
   const adminMenuItems = [
     { name: "Dashboard", icon: <FaTachometerAlt /> },
-    { name: "Users", icon: <FaUsers />, component: <UserManagement /> },
-    { name: "Courses", icon: <FaBook />, component: <CourseManagement /> },
-    { name: "AssignFaculty", icon: <FaBook />, component: <AssignFaculty /> },
+    { name: "Users", icon: <FaUsers />, path:"/admin/user" },
+    { name: "Courses", icon: <FaBook />, path:"/admin/course" },
+    { name: "AssignFaculty", icon: <FaBook />, path:"/admin/faculty" },
   ];
 
   const facultyMenuItems = [
@@ -47,7 +47,7 @@ const Sidebar = ({ userRole }) => {
             {menuItems.map((item) => (
               <li
                 key={item.name}
-                onClick={() => setActiveTab(item)}
+                onClick={() => router.push(item.path)}
                 className={`flex items-center gap-3 p-4 cursor-pointer transition-all hover:bg-gray-800 ${
                   activeTab === item ? "bg-gray-700" : ""
                 }`}
@@ -80,10 +80,9 @@ const Sidebar = ({ userRole }) => {
         </motion.h1>
 
         {/* Dummy Content */}
-        {console.log(activeTab)}
+        
         <div className="mt-5 bg-white p-6 rounded-lg shadow">
-          <p>Content for {activeTab?.name} will go here...</p>
-          {activeTab.component != undefined && activeTab.component}
+          {children}
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 "use client"
+import Sidebar from "@/app/components/Sidebar";
 import { getAllUsers } from "@/redux/slices/userSlice";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -50,7 +51,8 @@ const UserManagement = () => {
   },[])
 
   return (
-    <div className="mt-5 bg-white p-6 rounded-lg shadow-lg">
+    <Sidebar userRole="admin">
+      <div className="mt-5 bg-white p-6 rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-gray-700">Manage Users</h2>
       <div className="mb-4 flex flex-wrap gap-2">
         <input
@@ -138,6 +140,7 @@ const UserManagement = () => {
         </div>
       )}
     </div>
+    </Sidebar>
   );
 };
 

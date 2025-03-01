@@ -53,7 +53,6 @@ export async function GET(req, {params}) {
 
     // Fetch courses assigned to the faculty
     const facultyCourses = await Lecture.find({ faculty: facultyId });
-
     return NextResponse.json({ courses: facultyCourses }, { status: 200 });
   } catch (error) {
     console.error("Error fetching faculty students:", error);

@@ -3,13 +3,15 @@ import { useEffect, useState } from "react";
 import FacultyDetails from "./FacultyDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllfaculties } from "@/redux/slices/facultySlice";
+import { useRouter } from "next/navigation";
 
 const AssignFaculty = () => {
   const dispatch = useDispatch();
   const {faculties} = useSelector(state => state.faculty);
+  const route = useRouter();
 
   const [selectedFaculty, setSelectedFaculty] = useState(null);
-  console.log(faculties);
+
   useEffect(()=>{
     dispatch(getAllfaculties())
   },[])
@@ -22,8 +24,8 @@ const AssignFaculty = () => {
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border p-2">Faculty ID</th>
-            <th className="border p-2">Name</th>
+            <th className="border p-2">Faculty Name</th>
+            <th className="border p-2">Email</th>
             <th className="border p-2">Branch Name</th>
             <th className="border p-2">Actions</th>
           </tr>
@@ -36,7 +38,7 @@ const AssignFaculty = () => {
               <td className="border p-2">{faculty.branchName}</td>
               <td className="border p-2">
                 <button
-                  onClick={() => setSelectedFaculty(faculty)}
+                  onClick={() => route.push(`/admin/faculty/${faculty._id}`)}
                   className="bg-blue-500 text-white px-3 py-1 rounded"
                 >
                   More
@@ -46,9 +48,6 @@ const AssignFaculty = () => {
           ))}
         </tbody>
       </table>
-
-      {/* Show Faculty Details */}
-      {selectedFaculty && <FacultyDetails faculty={selectedFaculty} onClose={() => setSelectedFaculty(null)} />}
     </div>
   );
 };

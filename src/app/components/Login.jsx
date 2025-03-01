@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "./Sidebar";
 
-const LoginPage = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -101,4 +101,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;
